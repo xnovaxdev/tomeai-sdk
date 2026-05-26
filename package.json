@@ -1,0 +1,53 @@
+{
+  "name": "@tome_ai/sdk",
+  "version": "0.1.1",
+  "description": "Tome AI client SDK — decentralized, wallet-owned memory for AI agents on Solana. Store, recall, share, fork, and trade agent memory; marketplace settles in $TOMEAI with SOL auto-swap via Jupiter.",
+  "license": "MIT",
+  "author": "xnovaxdev <85103433+xnovaxdev@users.noreply.github.com>",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xnovaxdev/tomeai-sdk.git"
+  },
+  "homepage": "https://github.com/xnovaxdev/tomeai-sdk#readme",
+  "bugs": {
+    "url": "https://github.com/xnovaxdev/tomeai-sdk/issues"
+  },
+  "keywords": [
+    "solana",
+    "ai-agents",
+    "memory",
+    "tome",
+    "sdk",
+    "jupiter",
+    "marketplace",
+    "web3"
+  ],
+  "type": "commonjs",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json && cp src/idl.json dist/idl.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "prepublishOnly": "npm run build"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "@anchor-lang/core": "^1.0.2",
+    "bs58": "^6.0.0",
+    "tweetnacl": "^1.0.3"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "typescript": "^5.6.0"
+  }
+}
