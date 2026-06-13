@@ -5,7 +5,7 @@
  * IDL can be found at `target/idl/tome.json`.
  */
 export type Tome = {
-  "address": "DUTEoWgApX4CM37QJfmLqUJdyWNM8qMXA5q5ry6W7Sje",
+  "address": "3RarcRtvGTbgjpY4BJHYuvj9CQsetXY25PL7jA2UV7fM",
   "metadata": {
     "name": "tome",
     "version": "0.1.0",
@@ -1466,7 +1466,7 @@ export type Tome = {
           {
             "name": "pricePerQuery",
             "docs": [
-              "Price per query, in lamports (devnet-SOL for the MVP)."
+              "Price per query, in lamports (SOL)."
             ],
             "type": "u64"
           },

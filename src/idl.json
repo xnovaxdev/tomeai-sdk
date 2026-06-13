@@ -1,5 +1,5 @@
 {
-  "address": "DUTEoWgApX4CM37QJfmLqUJdyWNM8qMXA5q5ry6W7Sje",
+  "address": "3RarcRtvGTbgjpY4BJHYuvj9CQsetXY25PL7jA2UV7fM",
   "metadata": {
     "name": "tome",
     "version": "0.1.0",
@@ -1460,7 +1460,7 @@
           {
             "name": "price_per_query",
             "docs": [
-              "Price per query, in lamports (devnet-SOL for the MVP)."
+              "Price per query, in lamports (SOL)."
             ],
             "type": "u64"
           },

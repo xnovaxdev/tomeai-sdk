@@ -26,7 +26,7 @@ export interface TomeConfig {
   apiUrl: string;
   /** Signer (wallet adapter or keypair-wrapped). */
   wallet: TomeWallet;
-  /** RPC endpoint (defaults to devnet). Ignored if `connection` is given. */
+  /** RPC endpoint (defaults to mainnet-beta). Ignored if `connection` is given. */
   rpcUrl?: string;
   connection?: anchor.web3.Connection;
   programId?: string;
