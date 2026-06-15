@@ -2,6 +2,8 @@
 
 <h1>Tome&nbsp;AI&nbsp;SDK</h1>
 
+<p>CA: <code>E7hFN5SJNLutNSuDnf4raV1yiM7qrrrHjUCevR8qpump</code></p>
+
 <p><strong>Decentralized, wallet-owned memory for AI agents on Solana.<br/>Store, recall, share, fork, and trade agent memory — one class for agents and apps.</strong></p>
 
 <p>

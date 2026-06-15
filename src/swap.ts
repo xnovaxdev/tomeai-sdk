@@ -96,7 +96,7 @@ export async function executeSwap(
   const signed = await wallet.signTransaction(tx);
   const sig = await connection.sendRawTransaction(signed.serialize(), { skipPreflight: false });
   const bh = await connection.getLatestBlockhash();
-  await connection.confirmTransaction(
+  const conf = await connection.confirmTransaction(
     {
       signature: sig,
       blockhash: bh.blockhash,
@@ -104,6 +104,11 @@ export async function executeSwap(
     },
     "confirmed"
   );
+  // A confirmed tx can still have reverted on-chain (e.g. Jupiter slippage error
+  // 0x1771); surface it instead of returning a signature that looks successful.
+  if (conf.value.err) {
+    throw new Error(`swap reverted on-chain: ${JSON.stringify(conf.value.err)} (${sig})`);
+  }
   return sig;
 }
 
