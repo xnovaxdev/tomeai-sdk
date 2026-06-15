@@ -1,7 +1,8 @@
 export { TomeAI } from "./client";
 export { walletFromKeypair } from "./keypair";
 export { deriveKey, encryptWith, decryptWith, isEncrypted } from "./crypto";
-export { entryHash, merkleRootHex, computeVaultRoot } from "./merkle";
+export { entryHash, merkleRootHex, computeVaultRoot, merkleProof, verifyInclusion } from "./merkle";
+export type { ProofNode } from "./merkle";
 export { getSwapQuote, buildSwapTx, executeSwap } from "./swap";
 export type { SwapQuote } from "./swap";
 export {

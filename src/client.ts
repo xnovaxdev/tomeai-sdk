@@ -14,6 +14,7 @@ import {
 } from "./constants";
 import { executeSwap, transferToken } from "./swap";
 import { deriveKey, encryptWith, decryptWith, isEncrypted } from "./crypto";
+import { computeVaultRoot } from "./merkle";
 import type { TomeConfig, TomeWallet, Visibility, MemoryInput, Hit, Permission } from "./types";
 
 const { PublicKey, Connection } = anchor.web3;
@@ -361,6 +362,24 @@ export class TomeAI {
     const res = await fetch(`${this.apiUrl}/api/vault/${vault}/entries`, { headers });
     if (!res.ok) throw new Error(`entries -> ${res.status}`);
     return this.maybeDecrypt((await res.json()) as Hit[]);
+  }
+
+  /**
+   * Trustlessly verify a vault: read its `merkle_root` straight from the on-chain
+   * account (not the backend's word) and compare it to the root recomputed locally
+   * from the content you can read. `match: true` proves the stored memory is
+   * authentic — it matches what's anchored on Solana.
+   */
+  async verify(
+    vault: string
+  ): Promise<{ match: boolean; onChainRoot: string; localRoot: string; entryCount: number }> {
+    const acct = await this.program.account.memoryVault.fetch(new PublicKey(vault));
+    const onChainRoot = [...(acct.merkleRoot as number[])]
+      .map((b) => b.toString(16).padStart(2, "0"))
+      .join("");
+    const entries = await this.readEntries(vault);
+    const localRoot = await computeVaultRoot(entries);
+    return { match: localRoot === onChainRoot, onChainRoot, localRoot, entryCount: entries.length };
   }
 
   /**

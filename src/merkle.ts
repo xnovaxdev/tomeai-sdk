@@ -64,3 +64,50 @@ export async function merkleRootHex(contents: string[]): Promise<string> {
 export async function computeVaultRoot(entries: { content: string }[]): Promise<string> {
   return merkleRootHex(entries.map((e) => e.content));
 }
+
+function fromHex(hex: string): Uint8Array {
+  const out = new Uint8Array(hex.length / 2);
+  for (let i = 0; i < out.length; i++) out[i] = parseInt(hex.slice(i * 2, i * 2 + 2), 16);
+  return out;
+}
+
+/** One step of a Merkle inclusion proof: a sibling hash and which side it sits on. */
+export interface ProofNode {
+  hash: string;
+  /** true → the sibling is on the LEFT of the running hash. */
+  left: boolean;
+}
+
+/**
+ * Build a Merkle inclusion proof for the entry at `index` (same ordering as
+ * `merkleRootHex`). Verify it with `verifyInclusion` — proves a single entry
+ * belongs to the committed root without revealing the rest of the set.
+ */
+export async function merkleProof(contents: string[], index: number): Promise<ProofNode[]> {
+  if (index < 0 || index >= contents.length) throw new Error("index out of range");
+  let layer = await Promise.all(contents.map((c) => sha256(enc.encode(c))));
+  const proof: ProofNode[] = [];
+  let idx = index;
+  while (layer.length > 1) {
+    const isRight = idx % 2 === 1;
+    const sibIdx = isRight ? idx - 1 : Math.min(idx + 1, layer.length - 1); // duplicate-last on odd layers
+    proof.push({ hash: toHex(layer[sibIdx]), left: isRight });
+    const next: Uint8Array[] = [];
+    for (let i = 0; i < layer.length; i += 2) {
+      next.push(await sha256(concat(layer[i], i + 1 < layer.length ? layer[i + 1] : layer[i])));
+    }
+    layer = next;
+    idx = Math.floor(idx / 2);
+  }
+  return proof;
+}
+
+/** Verify that `content` is included under `root`, given its inclusion `proof`. */
+export async function verifyInclusion(content: string, proof: ProofNode[], root: string): Promise<boolean> {
+  let acc = await sha256(enc.encode(content));
+  for (const step of proof) {
+    const sib = fromHex(step.hash);
+    acc = step.left ? await sha256(concat(sib, acc)) : await sha256(concat(acc, sib));
+  }
+  return toHex(acc) === root;
+}
