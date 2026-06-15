@@ -1,6 +1,6 @@
 {
   "name": "@tome_ai/sdk",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Tome AI client SDK — decentralized, wallet-owned memory for AI agents on Solana. Store, recall, share, fork, and trade agent memory; marketplace settles in $TOMEAI with SOL auto-swap via Jupiter.",
   "license": "MIT",
   "author": "xnovaxdev <85103433+xnovaxdev@users.noreply.github.com>",
